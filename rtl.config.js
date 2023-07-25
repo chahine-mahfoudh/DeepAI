@@ -66,6 +66,22 @@ module.exports = {
           },
         ],
       },
+    
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+        {
+            loader: 'url-loader',
+            options: {
+              limit: 8192, // Specify the maximum size (in bytes) for the image to be embedded as a Data URL
+              name: 'images/[name].[hash:8].[ext]', // Output path and filename for the images
+            },
+        },
+        ],
+    },
+
+
+
     ],
   },
 }
