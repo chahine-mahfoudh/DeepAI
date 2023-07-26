@@ -14,6 +14,10 @@ import {
     TablesWidget5,
     TablesWidget9,
 } from '../../../_metronic/partials/widgets'
+import { TablesWidget14 } from '../../../_metronic/partials/widgets/tables/TablesWidget14'
+import { TablesWidget15 } from '../../../_metronic/partials/widgets/tables/TablesWidget15'
+import ListsWidget14 from '../../../_metronic/partials/widgets/lists/ListsWidget14'
+import { ListsWidget15 } from '../../../_metronic/partials/widgets/lists/ListsWidget15'
 import ListsWidget11 from '../../../_metronic/partials/widgets/lists/ListsWidget11'
 import { RiDivideLine } from 'react-icons/ri'
 
@@ -93,13 +97,13 @@ const DashboardPage = () => {
 
         {/* begin::Col */}
         <div className='col-xxl-8'>
-          <TablesWidget9 className='card-xxl-stretch mb-5 mb-xl-8' />
+          <TablesWidget14 className='card-xxl-stretch mb-5 mb-xl-8' />
         </div>
         {/* end::Col */}
 
         {/* begin::Col */}
         <div className='col-xxl-4'>
-          <ListsWidget3 className='card-xxl-stretch mb-xl-3' />
+          <ListsWidget14 className='card-xxl-stretch mb-xl-3' />
         </div>
         {/* end::Col */}
         
@@ -113,13 +117,13 @@ const DashboardPage = () => {
       <div className='row gy-5 g-xl-8'>
         {/* begin::Col */}
         <div className='col-xxl-4'>
-          <ListsWidget3 className='card-xxl-stretch mb-xl-3' />
+          <ListsWidget15 className='card-xxl-stretch mb-xl-3' />
         </div>
         {/* end::Col */}
 
         {/* begin::Col */}
         <div className='col-xxl-8'>
-          <TablesWidget9 className='card-xxl-stretch mb-5 mb-xl-8' />
+          <TablesWidget15 className='card-xxl-stretch mb-5 mb-xl-8' />
         </div>
         {/* end::Col */}
       </div>

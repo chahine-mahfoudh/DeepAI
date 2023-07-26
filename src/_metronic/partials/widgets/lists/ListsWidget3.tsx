@@ -37,6 +37,17 @@ const ListsWidget3: React.FC<Props> = ({className}) => {
     </div>      
     
     {/* end::Body */}
+
+     {/* begin::Footer */}
+<div className='card-footer'>
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh' }}>
+  <button type='button' className='btn btn-primary' >
+      Generate 
+  </button>
+  </div>
+</div>
+{/* end::Footer */}
+
     </div>
   )
 }
