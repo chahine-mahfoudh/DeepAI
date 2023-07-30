@@ -11,3 +11,20 @@
 
 // Layout
 @import 'layout/layout';
+
+
+/* Add this CSS to your stylesheet or style block */
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.pdf-content {
+  width: 100%;
+  height: 100%;
+}
+.modal-content {
+  max-height: 90vh; /* Adjust the value as needed */
+}
