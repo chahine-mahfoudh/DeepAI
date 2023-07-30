@@ -68,7 +68,7 @@ const ProjectsTab = () => {
       {/*begin::Projects*/}
       <div className='m-0'>
         {/*begin::Heading*/}
-        <h1 className='text-gray-800 fw-bold mb-6 mx-5'>Projects</h1>
+        <h1 className='text-gray-800 fw-bold mb-6 mx-5'>Dashboard</h1>
         {/*end::Heading*/}
 
         {/*begin::Items*/}

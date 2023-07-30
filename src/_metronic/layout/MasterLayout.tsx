@@ -51,7 +51,7 @@ const MasterLayout = () => {
 
         {/* begin:: Drawers */}
         <ActivityDrawer />
-        <RightToolbar />
+        {/* <RightToolbar /> */}
         <DrawerMessenger />
         {/* end:: Drawers */}
 
