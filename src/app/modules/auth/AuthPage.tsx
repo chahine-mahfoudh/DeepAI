@@ -5,6 +5,7 @@ import {Registration} from './components/Registration'
 import {ForgotPassword} from './components/ForgotPassword'
 import {Login} from './components/Login'
 import {toAbsoluteUrl} from '../../../_metronic/helpers'
+import justiceWoman from '../../../_metronic/assets/legaly/Legaly-Intro.webp'
 
 const AuthLayout = () => {
   useEffect(() => {
@@ -13,37 +14,19 @@ const AuthLayout = () => {
   }, [])
 
   return (
-    <div
-      className='d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed'
-      style={{
-        backgroundImage: `url(${toAbsoluteUrl('/media/illustrations/sketchy-1/14.png')})`,
-      }}
-    >
+    <div className='d-flex  flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed'>
       {/* begin::Content */}
-      <div className='d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20'>
-        {/* begin::Logo */}
-        <a href='#' className='mb-12'>
-          <img
-            alt='Logo'
-            src={toAbsoluteUrl('/media/logos/default-dark.svg')}
-            className='theme-dark-show h-45px'
-          />
-          <img
-            alt='Logo'
-            src={toAbsoluteUrl('/media/logos/default.svg')}
-            className='theme-light-show h-45px'
-          ></img>
-        </a>
-        {/* end::Logo */}
-        {/* begin::Wrapper */}
-        <div className='w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto'>
+      <div className='d-flex justify-content-evenly flex-column-fluid p-10 pb-lg-20'>
+        <div className='w-lg-500px h-100 d-none d-lg-block'>
+          <img className='img-fluid h-100' src={justiceWoman} alt='' />
+        </div>
+        <div className='w-lg-500px bg-body rounded shadow-sm p-2 p-lg-15 '>
           <Outlet />
         </div>
-        {/* end::Wrapper */}
       </div>
       {/* end::Content */}
       {/* begin::Footer */}
-      <div className='d-flex flex-center flex-column-auto p-10'>
+      {/* <div className='d-flex flex-center flex-column-auto p-10'>
         <div className='d-flex align-items-center fw-semibold fs-6'>
           <a href='#' className='text-muted text-hover-primary px-2'>
             About
@@ -57,7 +40,7 @@ const AuthLayout = () => {
             Contact Us
           </a>
         </div>
-      </div>
+      </div> */}
       {/* end::Footer */}
     </div>
   )

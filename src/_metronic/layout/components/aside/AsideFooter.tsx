@@ -1,7 +1,9 @@
+import {useAppSelector} from '../../../../app/store/hooks/reduxHooks'
 import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import {HeaderNotificationsMenu, HeaderUserMenu, QuickLinks} from '../../../partials'
 
 const AsideFooter = () => {
+  const currentUser = useAppSelector((state) => state.auth.currentUser)
   return (
     <div
       className='aside-footer d-flex flex-column align-items-center flex-column-auto'
@@ -77,7 +79,16 @@ const AsideFooter = () => {
           data-kt-menu-placement='top-start'
           title='User profile'
         >
-          <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='avatar' />
+          {currentUser?.first_name ? (
+            <div className='symbol mr-3'>
+              <span className='symbol-label font-size-h2'>
+                {currentUser?.first_name.charAt(0).toUpperCase() +
+                  currentUser?.last_name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+          ) : (
+            <img src={toAbsoluteUrl('/media/avatars/blank.png')} alt='avatar' />
+          )}
         </div>
         {/* end::Menu wrapper */}
         <HeaderUserMenu />
