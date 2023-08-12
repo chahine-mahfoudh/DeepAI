@@ -1,20 +1,7 @@
 import {RiSearchLine} from 'react-icons/ri'
-import {BsFillChatLeftTextFill} from 'react-icons/bs'
 import {useState, useEffect} from 'react'
-import {
-  ButtonDropdown,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  FormGroup,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Label,
-} from 'reactstrap'
-import {toast} from 'react-toastify'
-import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import {Input, InputGroup, InputGroupText} from 'reactstrap'
+import {KTSVG, toAbsoluteUrl} from '../../../_metronic/helpers'
 
 function Search() {
   const typingSpeed = 150
@@ -25,34 +12,18 @@ function Search() {
   const [searchAlreadyClicked, setSearchAlredyClicked] = useState(false)
   const [textResponse, setTextResponse] = useState('')
   const [animatedTextResponse, setAnimatedTextResponse] = useState('')
-  const [CountryDropdownOpen, setCountryDropdownOpen] = useState(false)
   const [selectedDomain, setSelectedDomain] = useState('LAW')
-  
+
   const suggestion = [
     'Qui est exonéré des frais de timbre ?',
     'Quel est le montant du SMIC en Tunisie ?',
     'من كتب دستور تونس 1959؟',
     'Amendes Finances tunisie, combien?',
   ]
-  const references = [
-    "L'article 198 du Code pénal tunisien",
-  ]
-  const reponseSuggestion = [
-    'Vol simple',
-    'Vol domestique',
-  ]
-  const bootstrapBgColors = ['primary', 'secondary', 'success', 'danger']
-  const reponseBootstrapBgColors = [
-    'primary',
-    'secondary',
-    'success',
-    'danger',
-    'warning',
-    'info',
-    'light',
-    'dark',
-  ]
-
+  const references = ["L'article 198 du Code pénal tunisien"]
+  const reponseSuggestion = ['Vol simple', 'Vol domestique']
+  const bootstrapBgColors = ['secondary', 'success', 'danger']
+  const reponseBootstrapBgColors = ['secondary', 'success', 'danger', 'warning', 'info', 'light']
 
   function handleTextareaKeyDown(event: {target: any}) {
     const textarea = event.target
@@ -79,18 +50,17 @@ function Search() {
         clearInterval(interval) // Stop the animation when currentIndex reaches the end.
       }
     }, responseSpeed)
-
     return () => clearInterval(interval)
   }, [textResponse])
   const handleSearch = () => {
     if (!searchAlreadyClicked) {
       document.getElementById('search-accordion-header')?.click()
       setSearchAlredyClicked(true)
-      setTextResponse("Peine : L'article 198 du Code pénal tunisien prévoit que le vol qualifié est passible d'une peine de réclusion criminelle à perpétuité.")
+      setTextResponse(
+        "Peine : L'article 198 du Code pénal tunisien prévoit que le vol qualifié est passible d'une peine de réclusion criminelle à perpétuité."
+      )
     }
   }
-
-  const toggle = () => setCountryDropdownOpen((prevState) => !prevState)
 
   return (
     <div className='w-100'>
@@ -103,28 +73,36 @@ function Search() {
             </label>
           </div>
           <div className='col'>
-            <div className='form-check form-check-custom form-check-solid'>
+            <label
+              htmlFor='tn-country'
+              className='form-check form-check-custom form-check-solid cursor-pointer'
+            >
               <span className='accordion-icon'>
                 <KTSVG className='svg-icon svg-icon-2x' path='/media/flags/tunisia.svg' />
               </span>
               <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>TN</h3>
               <input
-                className='form-check-input'
+                id='tn-country'
+                className='form-check-input '
                 type='radio'
                 value={'TN'}
                 name='country'
                 checked={selectedCountry === 'TN'}
                 onChange={() => setSelectedCounytry('TN')}
               />
-            </div>
+            </label>
           </div>
           <div className='col '>
-            <div className='form-check form-check-custom form-check-solid'>
+            <label
+              htmlFor='fr-country'
+              className='form-check form-check-custom form-check-solid cursor-pointer'
+            >
               <span className='accordion-icon'>
                 <KTSVG className='svg-icon svg-icon-2x' path='/media/flags/france.svg' />
               </span>
               <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>FR</h3>
               <input
+                id='fr-country'
                 className='form-check-input'
                 type='radio'
                 value={'FR'}
@@ -132,7 +110,7 @@ function Search() {
                 checked={selectedCountry === 'FR'}
                 onChange={() => setSelectedCounytry('FR')}
               />
-            </div>
+            </label>
           </div>
         </div>
         <div className='row w-lg-50 '>
@@ -142,9 +120,13 @@ function Search() {
             </label>
           </div>
           <div className='col '>
-            <div className='form-check form-check-custom form-check-solid'>
+            <label
+              htmlFor='law-domain'
+              className='form-check form-check-custom form-check-solid cursor-pointer'
+            >
               <span className='accordion-icon'>
                 <img
+                  alt=''
                   className='svg-icon svg-icon-2x'
                   src={toAbsoluteUrl('/media/law.png')}
                   width={35}
@@ -153,6 +135,7 @@ function Search() {
               </span>
               <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>Law</h3>
               <input
+                id='law-domain'
                 className='form-check-input'
                 type='radio'
                 value={'LAW'}
@@ -160,12 +143,16 @@ function Search() {
                 checked={selectedDomain === 'LAW'}
                 onChange={() => setSelectedDomain('LAW')}
               />
-            </div>
+            </label>
           </div>
           <div className='col'>
-            <div className='form-check form-check-custom form-check-solid'>
+            <label
+              htmlFor='general-domain'
+              className='form-check form-check-custom form-check-solid cursor-pointer'
+            >
               <span className='accordion-icon'>
                 <img
+                  alt=''
                   className='svg-icon svg-icon-2x'
                   src={toAbsoluteUrl('/media/paper.png')}
                   width={35}
@@ -174,6 +161,7 @@ function Search() {
               </span>
               <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>General</h3>
               <input
+                id='general-domain'
                 className='form-check-input'
                 type='radio'
                 value={'GENERAL'}
@@ -181,7 +169,7 @@ function Search() {
                 checked={selectedDomain === 'GENERAL'}
                 onChange={() => setSelectedDomain('GENERAL')}
               />
-            </div>
+            </label>
           </div>
         </div>
         <div className='w-lg-75'>
@@ -258,93 +246,103 @@ function Search() {
           </div> */}
         </div>
         <div className=' card w-100'>
-          <div className="row">
+          <div className='row'>
             <div className='col-lg-7'>
               <div className='card h-100 card-xl-stretch mb-5 mb-xl-8 '>
                 <div className='card-header'>
                   <div className='w-100 card-title'>
                     <div className='w-100 h-100 d-flex justify-content-between align-items-center'>
                       <div>
-                        <label htmlFor=''>Reponse pour:  {animatedTextResponse && "Peine du vol qualifié ?"}</label>
+                        <label htmlFor=''>
+                          Reponse pour: {animatedTextResponse && 'Peine du vol qualifié ?'}
+                        </label>
                       </div>
-                     {animatedTextResponse && <div className='d-flex  align-items-center'>
-                        <div className='p-1'>
-                          <span className='accordion-icon'>
-                            <i className='bi bi-hand-thumbs-up-fill fs-2x'></i>
-                          </span>
+                      {animatedTextResponse && (
+                        <div className='d-flex  align-items-center'>
+                          <div className='p-1'>
+                            <span className='accordion-icon'>
+                              <i className='bi bi-hand-thumbs-up-fill fs-2x'></i>
+                            </span>
+                          </div>
+                          <div className='px-2 pt-2'>
+                            <span className='accordion-icon'>
+                              <i className='bi bi-hand-thumbs-down-fill fs-2x'></i>
+                            </span>
+                          </div>
                         </div>
-                        <div className='px-2 pt-2'>
-                          <span className='accordion-icon'>
-                            <i className='bi bi-hand-thumbs-down-fill fs-2x'></i>
-                          </span>
-                        </div>
-                      </div>}
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className='card-body'>{animatedTextResponse}</div>
-           {animatedTextResponse &&     <div className='card-footer'>
-                  <div className='w-lg-75'>
-                    <div className='accordion accordion-icon-toggle ' id='kt_accordion_2-related'>
-                      <div className='mb-5 w-100 '>
-                        <div
-                          className='accordion-header py-3 d-flex'
-                          data-bs-toggle='collapse'
-                          data-bs-target='#kt_accordion_2_item_1-related'
-                          id='search-accordion-header-related'
-                        >
-                          <span className='accordion-icon'>
-                            <KTSVG
-                              className='svg-icon svg-icon-4'
-                              path='/media/icons/duotune/arrows/arr064.svg'
-                            />
-                          </span>
-                          <h3 className='fs-7 text-gray-800 fw-bold mb-0 ms-4'>Related Question</h3>
-                        </div>
-                        <div
-                          id='kt_accordion_2_item_1-related'
-                          className='fs-6 collapse show  ps-10'
-                          data-bs-parent='#kt_accordion_2-related'
-                        >
-                          <div>
-                            {reponseSuggestion.map((s, i) => (
-                              <p dir='auto'>
-                                <div
-                                  className={`bg-${
-                                    reponseBootstrapBgColors[i % reponseBootstrapBgColors.length]
-                                  }  p-2 rounded-3 fs-7`}
-                                >
-                                  {s}
-                                </div>
-                              </p>
-                            ))}
+                {animatedTextResponse && (
+                  <div className='card-footer'>
+                    <div className='w-lg-75'>
+                      <div className='accordion accordion-icon-toggle ' id='kt_accordion_2-related'>
+                        <div className='mb-5 w-100 '>
+                          <div
+                            className='accordion-header py-3 d-flex'
+                            data-bs-toggle='collapse'
+                            data-bs-target='#kt_accordion_2_item_1-related'
+                            id='search-accordion-header-related'
+                          >
+                            <span className='accordion-icon'>
+                              <KTSVG
+                                className='svg-icon svg-icon-4'
+                                path='/media/icons/duotune/arrows/arr064.svg'
+                              />
+                            </span>
+                            <h3 className='fs-7 text-gray-800 fw-bold mb-0 ms-4'>
+                              Related Question
+                            </h3>
+                          </div>
+                          <div
+                            id='kt_accordion_2_item_1-related'
+                            className='fs-6 collapse show  ps-10'
+                            data-bs-parent='#kt_accordion_2-related'
+                          >
+                            <div>
+                              {reponseSuggestion.map((s, i) => (
+                                <p dir='auto'>
+                                  <div
+                                    className={`bg-${
+                                      reponseBootstrapBgColors[i % reponseBootstrapBgColors.length]
+                                    }  p-2 rounded-3 fs-7`}
+                                  >
+                                    {s}
+                                  </div>
+                                </p>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>}
+                )}
               </div>
             </div>
             <div className='col-lg-4'>
-        { animatedTextResponse &&     <div className='card'>
-                <div className='card-header'>
-                  <div className='card-title'>References</div>
+              {animatedTextResponse && (
+                <div className='card'>
+                  <div className='card-header'>
+                    <div className='card-title'>References</div>
+                  </div>
+                  <div className='card-body'>
+                    {references.map((s, i) => (
+                      <p dir='auto'>
+                        <div
+                          className={`bg-${
+                            bootstrapBgColors[i % bootstrapBgColors.length]
+                          }  p-2 rounded-3`}
+                        >
+                          {s}
+                        </div>
+                      </p>
+                    ))}
+                  </div>
                 </div>
-                <div className='card-body'>
-                  {references.map((s, i) => (
-                    <p dir='auto'>
-                      <div
-                        className={`bg-${
-                          bootstrapBgColors[i % bootstrapBgColors.length]
-                        }  p-2 rounded-3`}
-                      >
-                        {s}
-                      </div>
-                    </p>
-                  ))}
-                </div>
-              </div>}
+              )}
             </div>
           </div>
         </div>

@@ -3,31 +3,29 @@ import {FC} from 'react'
 import {KTIcon} from '../../../../helpers'
 import {AuthorsTab} from './AuthorsTab'
 import {MenuTab} from './MenuTab'
-import {HistoriqueTab} from './HistoriqueTab'
+import {HistoryTab} from './HistoryTab'
 import {ProjectsTab} from './ProjectsTab'
 import {SubscriptionsTab} from './SubscriptionsTab'
 import {TasksTab} from './TasksTab'
-
+import DashboardTab from './DashboardTab'
 type Props = {
   link: string
 }
 
 const SelectedTab: FC<Props> = ({link}) => {
   switch (link) {
-    case 'projects':
-      return <ProjectsTab />
+    case 'dashboard':
+      return <DashboardTab />
+    case 'search':
+      return <HistoryTab />
     case 'menu':
       return <MenuTab />
-    case 'subscription':
+    case 'paper':
       return <SubscriptionsTab />
-    case 'tasks':
+    case 'ready':
       return <TasksTab />
-    case 'notifications':
-      return <HistoriqueTab />
-    case 'authors':
-      return <AuthorsTab />
     default:
-      return <ProjectsTab />
+      return <DashboardTab />
   }
 }
 

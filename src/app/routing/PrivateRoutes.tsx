@@ -7,6 +7,9 @@ import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import Paper from '../pages/paper/Paper'
+import Search from '../pages/search/Search'
+import Ready from '../pages/ready/Ready'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -19,6 +22,10 @@ const PrivateRoutes = () => {
   return (
     <Routes>
       <Route element={<MasterLayout />}>
+      <Route path='paper' element={<Paper />} />
+      <Route path='search' element={<Search />} />
+      <Route path='ready' element={<Ready />} />
+      <Route path='paper' element={<Paper />} />
         {/* Redirect to Dashboard after success login/registartion */}
         <Route path='auth/*' element={<Navigate to='/dashboard' />} />
         {/* Pages */}

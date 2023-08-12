@@ -6,7 +6,7 @@ import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import {useLayout} from '../../core'
 import {DefaultTitle} from './page-title/DefaultTitle'
 import {Topbar} from './Topbar'
-
+import logo from '../../../assets/legaly/favicon-copy.png'
 export function HeaderWrapper() {
   const {config, classes, attributes} = useLayout()
   const {header} = config
@@ -51,7 +51,7 @@ export function HeaderWrapper() {
 
           {/* begin::Logo */}
           <Link to='/dashboard' className='d-flex align-items-center'>
-            <img alt='Logo' src={toAbsoluteUrl('/media/logos/demo7.svg')} className='h-30px' />
+            <img alt='Logo' src={logo} className='h-30px' />
           </Link>
           {/* end::Logo */}
         </div>

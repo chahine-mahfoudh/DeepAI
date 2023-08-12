@@ -4,22 +4,22 @@ import React from 'react'
 import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import {Dropdown1} from '../../content/dropdown/Dropdown1'
 import image from '../../../assets/images/image2.jpg'
-
-
-
+import {useNavigate} from 'react-router-dom'
+import imageOne from '../../../assets/legaly/paper.jpg'
 type Props = {
   className: string
 }
 
 const ListsWidget9: React.FC<Props> = ({className}) => {
+  const navigate = useNavigate()
   return (
     <div className={clsx('card', className)}>
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-3'>
-      <h3 className='card-title text-center align-items-center flex-column'>
-      <span className='fw-bolder text-dark fs-3'>Paper</span>
-      <span className='text-gray-400 mt-2 fw-bold fs-6'></span>
-    </h3>
+        <h3 className='card-title text-center align-items-center flex-column'>
+          <span className='fw-bolder text-dark fs-3'>Paper</span>
+          <span className='text-gray-400 mt-2 fw-bold fs-6'></span>
+        </h3>
         <div className='card-toolbar'>
           {/* begin::Menu */}
           <button
@@ -39,26 +39,25 @@ const ListsWidget9: React.FC<Props> = ({className}) => {
 
       {/* begin::Body */}
       <div className='card-body pt-5'>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh' }}>
-    <img src={image} alt='paper' style={{ width: '180px' }} />
-    </div>
+        <div className='h-100 w-100 d-flex jsutify-content-center align-items-center '>
+          <img alt='' className='w-100' src={imageOne} />
+        </div>
 
+        {/* end::Body */}
 
-      {/* end::Body */}
+        {/* begin::Footer */}
+      </div>
 
-      {/* begin::Footer */}
       <div className='card-footer'>
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh' }}>
-    <button type='button' className='btn btn-primary'>
-      Generate Paper
-    </button>
-  </div>
-  </div>
+        <div>
+          <button type='button' className='btn btn-primary' onClick={() => navigate('/paper')}>
+            Generate Paper
+          </button>
+        </div>
 
-  {/* end::Footer */}
+        {/* end::Footer */}
+      </div>
     </div>
-    </div>
-
   )
 }
 

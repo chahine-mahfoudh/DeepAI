@@ -31,8 +31,8 @@ export const DefaultLayoutConfig: ILayout = {
   aside: {
     menu: 'main',
     secondaryDisplay: true,
-    minimized: false,
-    minimize: true,
+    minimized: true,
+    minimize: false,
     display: true,
     fixed: true,
     menuIcon: 'svg',

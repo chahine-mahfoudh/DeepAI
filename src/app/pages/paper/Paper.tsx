@@ -1,8 +1,8 @@
 import {useForm} from 'react-hook-form'
-import useTextAnimation from '../../../utils/useTextAnimation'
 import {useState} from 'react'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+import useTextAnimation from '../../utils/useTextAnimation'
+import { toAbsoluteUrl } from '../../../_metronic/helpers/AssetHelpers'
 
 function Paper() {
   const {register, handleSubmit} = useForm()

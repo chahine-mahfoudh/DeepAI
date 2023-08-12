@@ -5,36 +5,17 @@ import {toAbsoluteUrl} from '../../../helpers'
 import {useLang, setLanguage} from '../../../i18n/Metronici18n'
 
 const languages = [
-  {
-    lang: 'en',
-    name: 'English',
-    flag: toAbsoluteUrl('/media/flags/united-states.svg'),
-  },
-  {
-    lang: 'zh',
-    name: 'Mandarin',
-    flag: toAbsoluteUrl('/media/flags/china.svg'),
-  },
-  {
-    lang: 'es',
-    name: 'Spanish',
-    flag: toAbsoluteUrl('/media/flags/spain.svg'),
-  },
-  {
-    lang: 'ja',
-    name: 'Japanese',
-    flag: toAbsoluteUrl('/media/flags/japan.svg'),
-  },
-  {
-    lang: 'de',
-    name: 'German',
-    flag: toAbsoluteUrl('/media/flags/germany.svg'),
-  },
+
   {
     lang: 'fr',
     name: 'French',
     flag: toAbsoluteUrl('/media/flags/france.svg'),
   },
+  {
+    lang: 'tn',
+    name: 'Arabic',
+    flag: toAbsoluteUrl('/media/flags/tunisia.svg'),
+  }
 ]
 
 const Languages: FC = () => {
