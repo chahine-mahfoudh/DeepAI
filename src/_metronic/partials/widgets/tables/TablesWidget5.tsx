@@ -15,9 +15,7 @@ const TablesWidget5: React.FC<Props> = ({className}) => {
       {/* begin::Body */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '15vh' }}>
       <h3 className='card-title fw-bold text-dark' style={{ textAlign: 'center' }}>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-      when an unknown printer took a galley of type and scrambled it to make a type specimen book. </h3>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. </h3>
     </div>   
       {/* end::Body */}
     </div>

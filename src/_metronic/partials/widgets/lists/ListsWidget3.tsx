@@ -12,9 +12,8 @@ const ListsWidget3: React.FC<Props> = ({className}) => {
     <div className={`card ${className}`}>
       {/* begin::Header */}
       <div className='card-header border-0'>
-        <h3 className='card-title fw-bold text-dark'></h3>
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
+        <h3 className='card-title fw-bold text-dark'>{''}</h3>
+        {/* <div className='card-toolbar'>
           <button
             type='button'
             className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
@@ -25,29 +24,34 @@ const ListsWidget3: React.FC<Props> = ({className}) => {
             <KTIcon iconName='category' className='fs-2' />
           </button>
           <Dropdown1 />
-          {/* end::Menu */}
-        </div>
+        </div> */}
       </div>
       {/* end::Header */}
       {/* begin::Body */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '70vh' }}>
-      <h3 className='card-title fw-bold text-dark' style={{ textAlign: 'center' }}>
-        Your text here
-      </h3>
-    </div>      
-    
-    {/* end::Body */}
+      <div
+        style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh'}}
+      >
+        <p className='text-dark fs-3  text-start px-5 first-letter-big' >
+          Élaborez des ébauches de documents juridiques de façon intuitive grâce à notre technologie
+          d’IA. Notre plateforme vous accompagne à chaque étape du processus de rédaction, rendant
+          la conception d’ébauches juridiques un véritable jeu d’enfant. Avec Legaly.tn, la
+          complexité de la rédaction juridique est transformée en simplicité.
+        </p>
+      </div>
 
-     {/* begin::Footer */}
-<div className='card-footer'>
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh' }}>
-  <button type='button' className='btn btn-primary' >
-      Generate 
-  </button>
-  </div>
-</div>
-{/* end::Footer */}
+      {/* end::Body */}
 
+      {/* begin::Footer */}
+      <div className='card-footer'>
+        <div
+          style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh'}}
+        >
+          <button type='button' className='btn btn-primary'>
+            Créez votre document
+          </button>
+        </div>
+      </div>
+      {/* end::Footer */}
     </div>
   )
 }

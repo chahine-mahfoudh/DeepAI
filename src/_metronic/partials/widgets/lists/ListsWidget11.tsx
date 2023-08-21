@@ -18,11 +18,10 @@ const ListsWidget11: React.FC<Props> = ({className}) => {
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-3'>
         <h3 className='card-title text-center align-items-center flex-column'>
-          <span className='fw-bolder text-dark fs-3'>Search</span>
+          <span className='fw-bolder text-dark fs-3'>Recherche Juridique</span>
           <span className='text-gray-400 mt-2 fw-bold fs-6'></span>
         </h3>
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
+        {/* <div className='card-toolbar'>
           <button
             type='button'
             className='btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3'
@@ -33,7 +32,7 @@ const ListsWidget11: React.FC<Props> = ({className}) => {
             <KTIcon iconName='category' className='fs-2' />
           </button>
           <Dropdown1 />
-        </div>
+        </div> */}
       </div>
 
       <div className='card-body pt-5'>
@@ -44,7 +43,7 @@ const ListsWidget11: React.FC<Props> = ({className}) => {
       <div className='card-footer'>
         <div>
           <button type='button' className='btn btn-primary' onClick={() => navigator('/search')}>
-            Search
+          Rechercher
           </button>
         </div>
       </div>

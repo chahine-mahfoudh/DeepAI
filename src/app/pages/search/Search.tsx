@@ -1,7 +1,17 @@
 import {RiSearchLine} from 'react-icons/ri'
 import {useState, useEffect} from 'react'
-import {Input, InputGroup, InputGroupText} from 'reactstrap'
+import {
+  Input,
+  InputGroup,
+  InputGroupText,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from 'reactstrap'
 import {KTSVG, toAbsoluteUrl} from '../../../_metronic/helpers'
+import axiosInstance from '../../config/axios/axiosConfig'
+import {nanoid} from '@reduxjs/toolkit'
 
 function Search() {
   const typingSpeed = 150
@@ -20,11 +30,9 @@ function Search() {
     'من كتب دستور تونس 1959؟',
     'Amendes Finances tunisie, combien?',
   ]
-  const references = ["L'article 198 du Code pénal tunisien"]
+  const [references, setReferences] = useState([])
   const reponseSuggestion = ['Vol simple', 'Vol domestique']
-  const bootstrapBgColors = ['secondary', 'success', 'danger']
-  const reponseBootstrapBgColors = ['secondary', 'success', 'danger', 'warning', 'info', 'light']
-
+  const [selectedReference, setSelectedReference]: any = useState()
   function handleTextareaKeyDown(event: {target: any}) {
     const textarea = event.target
     textarea.style.height = 'auto'
@@ -52,7 +60,13 @@ function Search() {
     }, responseSpeed)
     return () => clearInterval(interval)
   }, [textResponse])
-  const handleSearch = () => {
+  const handleSearch = async () => {
+    console.log('entred')
+
+    const inputSearchValue = (document.getElementById('search-input')! as HTMLInputElement).value
+    const {data} = await axiosInstance.post(
+      `/search/api/v1/search?question=${inputSearchValue}&resume=true`
+    )
     if (!searchAlreadyClicked) {
       document.getElementById('search-accordion-header')?.click()
       setSearchAlredyClicked(true)
@@ -60,7 +74,9 @@ function Search() {
         "Peine : L'article 198 du Code pénal tunisien prévoit que le vol qualifié est passible d'une peine de réclusion criminelle à perpétuité."
       )
     }
+    setReferences(data.documents)
   }
+  const trimedText = (text: string) => text?.substring(text.indexOf(':') + 1).trim()
 
   return (
     <div className='w-100'>
@@ -197,13 +213,7 @@ function Search() {
                 <div>
                   {suggestion.map((s, i) => (
                     <p dir='auto'>
-                      <div
-                        className={`bg-${
-                          bootstrapBgColors[i % bootstrapBgColors.length]
-                        }  p-2 rounded-3`}
-                      >
-                        {s}
-                      </div>
+                      <div className='p-2 rounded-3 bg-secondary'>{s}</div>
                     </p>
                   ))}
                 </div>
@@ -247,7 +257,7 @@ function Search() {
         </div>
         <div className=' card w-100'>
           <div className='row'>
-            <div className='col-lg-7'>
+            <div className='col-lg-8'>
               <div className='card h-100 card-xl-stretch mb-5 mb-xl-8 '>
                 <div className='card-header'>
                   <div className='w-100 card-title'>
@@ -304,13 +314,7 @@ function Search() {
                             <div>
                               {reponseSuggestion.map((s, i) => (
                                 <p dir='auto'>
-                                  <div
-                                    className={`bg-${
-                                      reponseBootstrapBgColors[i % reponseBootstrapBgColors.length]
-                                    }  p-2 rounded-3 fs-7`}
-                                  >
-                                    {s}
-                                  </div>
+                                  <div className='p-2 rounded-3 fs-7 bg-secondary'>{s}</div>
                                 </p>
                               ))}
                             </div>
@@ -324,25 +328,64 @@ function Search() {
             </div>
             <div className='col-lg-4'>
               {animatedTextResponse && (
-                <div className='card'>
+                <div className='card p-3'>
                   <div className='card-header'>
                     <div className='card-title'>References</div>
                   </div>
                   <div className='card-body'>
-                    {references.map((s, i) => (
-                      <p dir='auto'>
-                        <div
-                          className={`bg-${
-                            bootstrapBgColors[i % bootstrapBgColors.length]
-                          }  p-2 rounded-3`}
-                        >
-                          {s}
+                    {references.map((reference: any, i) => (
+                      <div key={i}>
+                        <div className='d-flex gap-2'>
+                          <button
+                            type='button'
+                            data-bs-toggle='modal'
+                            data-bs-target='#reference_content'
+                            onClick={() => setSelectedReference(reference)}
+                            className='btn btn-icon  flex-center bg-light btn-color-primary btn-active-color-primary h-40px'
+                          >
+                            <KTSVG
+                              path='/media/icons/duotune/coding/cod002.svg'
+                              className='svg-icon svg-icon-3x'
+                            />
+                          </button>
+                          <p className='p-2 rounded-3 bg-secondary' dir='auto'>
+                            {reference.metadata.doc_title}
+                          </p>
                         </div>
-                      </p>
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className='modal fade' tabIndex={-1} id='reference_content'>
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h5 className='modal-title'>
+                {`${trimedText(selectedReference?.metadata?.meta_infos)} n°${trimedText(
+                  selectedReference?.metadata?.meta_infos_2
+                )} du ${trimedText(selectedReference?.metadata?.meta_infos_3)}   
+                
+                `}
+              </h5>
+              <div
+                className='btn btn-icon btn-sm btn-active-light-primary ms-2'
+                data-bs-dismiss='modal'
+                aria-label='Close'
+              >
+                <KTSVG
+                  path='/media/icons/duotune/arrows/arr061.svg'
+                  className='svg-icon svg-icon-2x'
+                />
+              </div>
+            </div>
+            <div className='modal-body' style={{overflowY: 'auto'}}>
+              <p>{selectedReference?.page_content}</p>
             </div>
           </div>
         </div>

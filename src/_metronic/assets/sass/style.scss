@@ -31,3 +31,23 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.justified-text {
+  text-align: justify;
+  hyphens: auto;
+  position: relative;
+}
+
+.justified-text::after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
+.first-letter-big:first-child:first-letter {
+  float: left;
+
+  font-size: 5.3em; /* or we may use 5.3 X 16px  = 84.8px */
+  font-weight: 600;
+  line-height: 1;
+  margin: -5px 5px -10px -5px; /* Top Right Bottom Left */ 
+}

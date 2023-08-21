@@ -3,6 +3,7 @@ import {useState} from 'react'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import useTextAnimation from '../../utils/useTextAnimation'
 import { toAbsoluteUrl } from '../../../_metronic/helpers/AssetHelpers'
+import axiosInstance from '../../config/axios/axiosConfig'
 
 function Paper() {
   const {register, handleSubmit} = useForm()
@@ -14,8 +15,17 @@ function Paper() {
   const improveFile = () => {
     setImprovmentReq(true)
   }
-  const paperFormSubmit = (data: any) => {
-    console.log()
+  const paperFormSubmit = async ({ brief , type, names, language } : any) => {
+    const { data } = await axiosInstance.post(
+      '/search/api/v1/paper/', {
+        brief: brief,
+        type: type,
+        names: names,
+        language: language
+      }
+      
+      )
+      console.log(data);
   }
 
   const toggle = () => {
@@ -64,7 +74,7 @@ function Paper() {
         <div className='col-lg-3 p-5'>
           type de document
           <select
-            {...register('docType')}
+            {...register('type')}
             className='form-select'
             aria-label='Default select example'
           >
@@ -91,7 +101,7 @@ function Paper() {
         </div>
         <div className='offset-2 col-8  offset-2 p-5'>
           <textarea
-            {...register('details')}
+            {...register('brief')}
             placeholder={animatedPlaceholder}
             className='form-control'
             name=''
@@ -102,10 +112,7 @@ function Paper() {
         </div>
         <div className='text-center'>
           <button
-            type='button'
-            onClick={() => {
-              setOpenPdfModal(true)
-            }}
+            type='submit'
             className='btn btn-primary'
           >
             Generate

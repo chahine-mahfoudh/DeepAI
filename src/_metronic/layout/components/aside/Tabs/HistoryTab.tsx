@@ -5,9 +5,11 @@ import {BsFillChatLeftTextFill} from 'react-icons/bs'
 import {useState, useEffect} from 'react'
 import {FormGroup, Input, InputGroup, InputGroupText, Label} from 'reactstrap'
 import {toast} from 'react-toastify'
+import axiosInstance from '../../../../../app/config/axios/axiosConfig'
 
 function HistoryTab() {
   const [animatedText, setAnimatedText] = useState('')
+  const [historic, setHistoric] = useState([])
   const suggestion = [
     'Qui est exonéré des frais de timbre ?',
     'Quel est le montant du SMIC en Tunisie ?',
@@ -41,23 +43,14 @@ function HistoryTab() {
 
     return () => clearInterval(interval)
   }, [placeholderText, typingSpeed])
-
+ useEffect(() => {
+    axiosInstance.get('/search/api/historic/').then(({data}) => {
+      setHistoric(data)
+    })
+ },[])
   return (
     <div className='w-100'>
       <div className='d-flex flex-column justify-content-start align-items-center   flex-wrap gap-5  '>
-        <div className='d-flex flex-column gap-3 w-100'>
-          <div className='d-flex justify-content-evenly gap-3 flex-wrap w-100 m-2'>
-            <FormGroup switch>
-              <Input type='switch' role='switch' />
-              <Label check> Arab</Label>
-            </FormGroup>
-            <div>|</div>
-            <FormGroup switch>
-              <Input type='switch' role='switch' />
-              <Label check> Français</Label>
-            </FormGroup>
-          </div>
-        </div>
         <div className='w-100 d-flex  flex-wrap justify-content-evenly gap-3 text-center'>
           <div className='card shadow rounded-4'>
             <div className='card-header'>
@@ -65,7 +58,7 @@ function HistoryTab() {
               <h3 className='fw-semibold fs-2'>Historique</h3>
             </div>
             <div className='card-body'>
-              {suggestion.map((s) => (
+              {historic.map((s) => (
                 <div className='bg-info text-start p-2 border cursor-pointer'>
                   <BsFillChatLeftTextFill /> <span dir='auto'>{s}</span>
                 </div>

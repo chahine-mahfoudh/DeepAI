@@ -10,11 +10,9 @@ type Props = {
 const ListsWidget15: React.FC<Props> = ({className}) => {
   return (
     <div className={`card ${className}`}>
-      {/* begin::Header */}
       <div className='card-header border-0'>
-        <h3 className='card-title fw-bold text-dark'>To do</h3>
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
+        <h3 className='card-title fw-bold text-dark'>{''}</h3>
+        {/* <div className='card-toolbar'>
           <button
             type='button'
             className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
@@ -25,29 +23,34 @@ const ListsWidget15: React.FC<Props> = ({className}) => {
             <KTIcon iconName='category' className='fs-2' />
           </button>
           <Dropdown1 />
-          {/* end::Menu */}
-        </div>
+        </div> */}
       </div>
       {/* end::Header */}
       {/* begin::Body */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '70vh' }}>
-      <h3 className='card-title fw-bold text-dark' style={{ textAlign: 'center' }}>
-        Your text here
-      </h3>
-    </div>      
-    
-    {/* end::Body */}
+      <div
+        style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh'}}
+      >
+        <p className='text-dark fs-3  text-start px-5 first-letter-big'>
+          Explorez notre bibliothèque complète de documents juridiques préétablis. Adaptez les
+          champs modifiables à vos besoins et obtenez votre copie PDF personnalisée en un seul clic.
+          Avec Legaly.tn, la préparation de documents juridiques n’a jamais été aussi simple et
+          rapide.
+        </p>
+      </div>
 
-     {/* begin::Footer */}
-<div className='card-footer'>
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh' }}>
-  <button type='button' className='btn btn-primary' >
-      Ready 
-  </button>
-  </div>
-</div>
-{/* end::Footer */}
+      {/* end::Body */}
 
+      {/* begin::Footer */}
+      <div className='card-footer'>
+        <div
+          style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '8vh'}}
+        >
+          <button type='button' className='btn btn-primary'>
+          Choisissez votre modèle
+          </button>
+        </div>
+      </div>
+      {/* end::Footer */}
     </div>
   )
 }

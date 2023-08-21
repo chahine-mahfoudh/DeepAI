@@ -19,11 +19,10 @@ const ListsWidget4: React.FC<Props> = ({className, items = 6}) => {
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-3'>
         <h3 className='card-title text-center align-items-center flex-column'>
-          <span className='fw-bolder text-dark fs-3'>Ready</span>
+          <span className='fw-bolder text-dark fs-3'>Modèles de contrats</span>
           <span className='text-gray-400 mt-2 fw-bold fs-6'></span>
         </h3>
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
+        {/* <div className='card-toolbar'>
           <button
             type='button'
             className='btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3'
@@ -34,8 +33,7 @@ const ListsWidget4: React.FC<Props> = ({className, items = 6}) => {
             <KTIcon iconName='category' className='fs-2' />
           </button>
           <Dropdown1 />
-          {/* end::Menu */}
-        </div>
+        </div> */}
       </div>
       {/* end::Header */}
 
@@ -49,7 +47,7 @@ const ListsWidget4: React.FC<Props> = ({className, items = 6}) => {
       <div className='card-footer'>
         <div>
           <button type='button' className='btn btn-primary' onClick={() => navigate('/ready')}>
-            Ready
+          Choisir
           </button>
         </div>
         {/* end::Footer */}
