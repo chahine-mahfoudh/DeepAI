@@ -14,15 +14,19 @@ import axiosInstance from '../../config/axios/axiosConfig'
 import {nanoid} from '@reduxjs/toolkit'
 
 function Search() {
-  const typingSpeed = 150
+  const typingSpeed = 250
   const responseSpeed = 40
-  const placeholderText = 'Ask anything here to our AI and it will answear you  ...'
+  const placeholderText = 'Posez question ici à notre IA et elle vous répondra'
   const [animatedText, setAnimatedText] = useState('')
   const [selectedCountry, setSelectedCounytry] = useState('TN')
   const [searchAlreadyClicked, setSearchAlredyClicked] = useState(false)
   const [textResponse, setTextResponse] = useState('')
+  const [reponseIsLoading, setReponseIsLoading] = useState(false)
   const [animatedTextResponse, setAnimatedTextResponse] = useState('')
+  const [question, setQuestion] = useState('')
   const [selectedDomain, setSelectedDomain] = useState('LAW')
+  const [showedReferenceCount, setShowedReferenceCount] = useState(3)
+  const [showAllSuggestions, setShowAllSuggestions] = useState(false)
 
   const suggestion = [
     'Qui est exonéré des frais de timbre ?',
@@ -31,12 +35,20 @@ function Search() {
     'Amendes Finances tunisie, combien?',
   ]
   const [references, setReferences] = useState([])
-  const reponseSuggestion = ['Vol simple', 'Vol domestique']
+  const [reponseSuggestion, setReponseSuggestion] = useState([])
   const [selectedReference, setSelectedReference]: any = useState()
   function handleTextareaKeyDown(event: {target: any}) {
     const textarea = event.target
     textarea.style.height = 'auto'
     textarea.style.height = `${textarea.scrollHeight}px`
+  }
+  const handleShowMoreReferences = () => {
+    setShowAllSuggestions(true)
+    setShowedReferenceCount(references.length)
+  }
+  const handleShowLessReferences = () => {
+    setShowAllSuggestions(false)
+    setShowedReferenceCount(3)
   }
   useEffect(() => {
     let currentIndex = 0
@@ -61,31 +73,45 @@ function Search() {
     return () => clearInterval(interval)
   }, [textResponse])
   const handleSearch = async () => {
-    console.log('entred')
-
+    setReponseIsLoading(true)
     const inputSearchValue = (document.getElementById('search-input')! as HTMLInputElement).value
-    const {data} = await axiosInstance.post(
-      `/search/api/v1/search?question=${inputSearchValue}&resume=true`
-    )
+    setQuestion(inputSearchValue)
+    axiosInstance
+      .post(`/search/api/v1/answer/`, {
+        question: inputSearchValue,
+        query_type: 'general',
+        language: 'French',
+      })
+      .then(({data}) => {
+        setTextResponse(data.answer[0].text)
+        axiosInstance
+          .post(`/search/api/v1/search?question=${inputSearchValue}&ask_type=legal`)
+          .then(({data}) => {
+            setReferences(data.documents)
+            setReponseIsLoading(false)
+            axiosInstance.post(`/search/api/v1/suggest/`,{
+              query: inputSearchValue,
+              language: 'French',
+            }).then(({data})=>{
+              setReponseSuggestion(data.suggestions)
+            })
+          })
+      })
     if (!searchAlreadyClicked) {
       document.getElementById('search-accordion-header')?.click()
       setSearchAlredyClicked(true)
-      setTextResponse(
-        "Peine : L'article 198 du Code pénal tunisien prévoit que le vol qualifié est passible d'une peine de réclusion criminelle à perpétuité."
-      )
     }
-    setReferences(data.documents)
   }
   const trimedText = (text: string) => text?.substring(text.indexOf(':') + 1).trim()
 
   return (
     <div className='w-100'>
       <div className='d-flex flex-column justify-content-center align-items-center flex-wrap gap-5'>
-        <div className='h1 fw-semibold  py-5'>The AI search engine for LAW</div>
+        <div className='h1 fw-semibold  py-5'>IA Recherche Juridique</div>
         <div className='row w-lg-50  pt-5 gap-5'>
           <div className='col'>
             <label className='fs-2' htmlFor=''>
-              Country :
+              Pays :
             </label>
           </div>
           <div className='col'>
@@ -132,7 +158,7 @@ function Search() {
         <div className='row w-lg-50 '>
           <div className='col'>
             <label className='fs-2 ' htmlFor=''>
-              Domain :{' '}
+              Type :{' '}
             </label>
           </div>
           <div className='col '>
@@ -149,7 +175,7 @@ function Search() {
                   height={35}
                 />
               </span>
-              <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>Law</h3>
+              <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>Juridique</h3>
               <input
                 id='law-domain'
                 className='form-check-input'
@@ -175,7 +201,7 @@ function Search() {
                   height={35}
                 />
               </span>
-              <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>General</h3>
+              <h3 className='fs-4 text-gray-800 fw-bold mb-0 mx-4'>Général</h3>
               <input
                 id='general-domain'
                 className='form-check-input'
@@ -203,7 +229,9 @@ function Search() {
                     path='/media/icons/duotune/arrows/arr064.svg'
                   />
                 </span>
-                <h3 className='fs-4 text-gray-800 fw-bold mb-0 ms-4'>Explore Trending topics</h3>
+                <h3 className='fs-4 text-gray-800 fw-bold mb-0 ms-4'>
+                  Découvrir les sujets populaires
+                </h3>
               </div>
               <div
                 id='kt_accordion_2_item_1'
@@ -263,9 +291,7 @@ function Search() {
                   <div className='w-100 card-title'>
                     <div className='w-100 h-100 d-flex justify-content-between align-items-center'>
                       <div>
-                        <label htmlFor=''>
-                          Reponse pour: {animatedTextResponse && 'Peine du vol qualifié ?'}
-                        </label>
+                        <label htmlFor=''>Objet: {question}</label>
                       </div>
                       {animatedTextResponse && (
                         <div className='d-flex  align-items-center'>
@@ -303,7 +329,7 @@ function Search() {
                               />
                             </span>
                             <h3 className='fs-7 text-gray-800 fw-bold mb-0 ms-4'>
-                              Related Question
+                              Questions liée:
                             </h3>
                           </div>
                           <div
@@ -330,10 +356,10 @@ function Search() {
               {animatedTextResponse && (
                 <div className='card p-3'>
                   <div className='card-header'>
-                    <div className='card-title'>References</div>
+                    <div className='card-title'>Références</div>
                   </div>
                   <div className='card-body'>
-                    {references.map((reference: any, i) => (
+                    {references.slice(0, showedReferenceCount).map((reference: any, i) => (
                       <div key={i}>
                         <div className='d-flex gap-2'>
                           <button
@@ -354,6 +380,23 @@ function Search() {
                         </div>
                       </div>
                     ))}
+                    {showAllSuggestions ? (
+                      <button
+                        type='button'
+                        onClick={handleShowLessReferences}
+                        className='btn btn-link'
+                      >
+                        Voir moins
+                      </button>
+                    ) : (
+                      <button
+                        type='button'
+                        onClick={handleShowMoreReferences}
+                        className='btn btn-link'
+                      >
+                        Voir plus
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

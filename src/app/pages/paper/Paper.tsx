@@ -2,11 +2,14 @@ import {useForm} from 'react-hook-form'
 import {useState} from 'react'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import useTextAnimation from '../../utils/useTextAnimation'
-import { toAbsoluteUrl } from '../../../_metronic/helpers/AssetHelpers'
+import {toAbsoluteUrl} from '../../../_metronic/helpers/AssetHelpers'
 import axiosInstance from '../../config/axios/axiosConfig'
+import Select from 'react-select'
+import {useThemeMode} from '../../../_metronic/partials/layout/theme-mode/ThemeModeProvider'
 
 function Paper() {
   const {register, handleSubmit} = useForm()
+  const {mode, menuMode, updateMode, updateMenuMode} = useThemeMode()
   const textResponse = 'Please write the details here .' // Replace this with your desired text
   const responseSpeed = 150
   const animatedPlaceholder = useTextAnimation(textResponse, responseSpeed)
@@ -15,17 +18,14 @@ function Paper() {
   const improveFile = () => {
     setImprovmentReq(true)
   }
-  const paperFormSubmit = async ({ brief , type, names, language } : any) => {
-    const { data } = await axiosInstance.post(
-      '/search/api/v1/paper/', {
-        brief: brief,
-        type: type,
-        names: names,
-        language: language
-      }
-      
-      )
-      console.log(data);
+  const paperFormSubmit = async ({brief, type, names, language}: any) => {
+    const {data} = await axiosInstance.post('/search/api/v1/paper/', {
+      brief: brief,
+      type: type,
+      names: names,
+      language: language,
+    })
+    console.log(data)
   }
 
   const toggle = () => {
@@ -47,57 +47,49 @@ function Paper() {
       <div className='row mt-5 '>
         <div className='col-lg-3 p-5'>
           Pays
-          <select
-            {...register('country')}
-            className='form-select'
-            aria-label='Default select example'
-          >
-            <option value='1' selected>
-              🇹🇳 Tunisia
-            </option>
-            <option value='2'>🇲🇫 France</option>
-          </select>
+          <Select
+            options={[
+              {value: '1', label: ' 🇹🇳 Tunisia'},
+              {value: '2', label: ' 🇲🇫 France'},
+            ]}
+            defaultValue={{value: '1', label: ' 🇹🇳 Tunisia'}}
+            isSearchable
+            className='react-select-container'
+            classNamePrefix='react-select'
+          />
         </div>
         <div className='col-lg-3 p-5'>
           Langue
-          <select
-            {...register('language')}
-            className='form-select'
-            aria-label='Default select example'
-          >
-            <option value='1' selected>
-              Francais
-            </option>
-            <option value='2'>عربي</option>
-          </select>
+          <Select
+            options={[
+              {value: '1', label: '  Francais'},
+              {value: '2', label: '   عربي'},
+            ]}
+            defaultValue={{value: '1', label: '  Francais'}}
+            isSearchable
+            className='react-select-container'
+            classNamePrefix='react-select'
+          />
         </div>
         <div className='col-lg-3 p-5'>
           type de document
-          <select
-            {...register('type')}
-            className='form-select'
-            aria-label='Default select example'
-          >
-            <option value='1' selected>
-              Immobilier
-            </option>
-            <option value='2'>Two</option>
-            <option value='3'>Three</option>
-          </select>
+          <Select
+            options={[{value: '1', label: 'Immobilier'}]}
+            defaultValue={{value: '1', label: 'Immobilier'}}
+            isSearchable
+            className='react-select-container'
+            classNamePrefix='react-select'
+          />
         </div>
         <div className='col-lg-3 p-5'>
           Sous type de document
-          <select
-            {...register('subDocType')}
-            className='form-select'
-            aria-label='Default select example'
-          >
-            <option value='1' selected>
-              Contrat location
-            </option>
-            <option value='2'>Two</option>
-            <option value='3'>Three</option>
-          </select>
+          <Select
+            options={[{value: '1', label: 'Contrat location'}]}
+            defaultValue={{value: '1', label: 'Contrat location'}}
+            isSearchable
+            className='react-select-container'
+            classNamePrefix='react-select'
+          />
         </div>
         <div className='offset-2 col-8  offset-2 p-5'>
           <textarea
@@ -111,10 +103,7 @@ function Paper() {
           ></textarea>
         </div>
         <div className='text-center'>
-          <button
-            type='submit'
-            className='btn btn-primary'
-          >
+          <button type='submit' className='btn btn-primary'>
             Generate
           </button>
         </div>

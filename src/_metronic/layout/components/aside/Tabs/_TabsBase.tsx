@@ -58,16 +58,16 @@ const TabsBase: FC<Props> = ({link}) => {
       {/* begin::Footer */}
       <div className='flex-column-auto pt-10 px-5' id='kt_aside_secondary_footer'>
         <a
-          href={process.env.REACT_APP_PREVIEW_DOCS_URL + '/docs/changelog'}
+          href='https://legaly.tn/'
           target='_blank'
-          className='btn btn-bg-light btn-color-gray-600 btn-flex btn-active-color-primary flex-center w-100'
+          className='btn btn-bg-light btn-color-gray-600 btn-flex btn-active-color-body flex-center w-100'
           data-bs-toggle='tooltip'
           data-bs-custom-class='tooltip-dark'
           data-bs-trigger='hover'
           data-bs-offset='0,5'
           data-bs-dismiss-='click'
         >
-          <span className='btn-label'>Docs & Components</span>
+          <span className='btn-label'>legaly.tn</span>
           <KTIcon iconName='document' className='btn-icon fs-4 ms-2' />
         </a>
       </div>

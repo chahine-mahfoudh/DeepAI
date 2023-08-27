@@ -19,7 +19,7 @@ const ListsWidget4: React.FC<Props> = ({className, items = 6}) => {
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-3'>
         <h3 className='card-title text-center align-items-center flex-column'>
-          <span className='fw-bolder text-dark fs-3'>Modèles de contrats</span>
+          <span className='fw-bolder text-dark fs-3'>Modèles De Contrats</span>
           <span className='text-gray-400 mt-2 fw-bold fs-6'></span>
         </h3>
         {/* <div className='card-toolbar'>
