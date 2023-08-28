@@ -13,6 +13,12 @@ import {KTSVG, toAbsoluteUrl} from '../../../_metronic/helpers'
 import axiosInstance from '../../config/axios/axiosConfig'
 import {nanoid} from '@reduxjs/toolkit'
 
+type ConvertationType = {
+  question: string
+  answer: string
+  suggestions: string[]
+  references: any[]
+}
 function Search() {
   const typingSpeed = 250
   const responseSpeed = 40
@@ -27,7 +33,8 @@ function Search() {
   const [selectedDomain, setSelectedDomain] = useState('LAW')
   const [showedReferenceCount, setShowedReferenceCount] = useState(3)
   const [showAllSuggestions, setShowAllSuggestions] = useState(false)
-
+  const [showedReferences, setShowedReferences] = useState<number[]>([])
+  const [convertation, setConvertation] = useState<ConvertationType[]>([])
   const suggestion = [
     'Qui est exonéré des frais de timbre ?',
     'Quel est le montant du SMIC en Tunisie ?',
@@ -42,13 +49,14 @@ function Search() {
     textarea.style.height = 'auto'
     textarea.style.height = `${textarea.scrollHeight}px`
   }
-  const handleShowMoreReferences = () => {
-    setShowAllSuggestions(true)
-    setShowedReferenceCount(references.length)
+  const handleShowMoreReferences = (conversationIndex: number) => {
+    setShowedReferences((previousValues: any) => [...previousValues, conversationIndex])
   }
-  const handleShowLessReferences = () => {
-    setShowAllSuggestions(false)
-    setShowedReferenceCount(3)
+  const handleShowLessReferences = (conversationIndex: number) => {
+    setShowedReferences((previousValue: any) =>
+      previousValue.filter((item: any) => item !== conversationIndex)
+    )
+    console.log(showedReferences)
   }
   useEffect(() => {
     let currentIndex = 0
@@ -76,31 +84,35 @@ function Search() {
     setReponseIsLoading(true)
     const inputSearchValue = (document.getElementById('search-input')! as HTMLInputElement).value
     setQuestion(inputSearchValue)
-    axiosInstance
-      .post(`/search/api/v1/answer/`, {
-        question: inputSearchValue,
-        query_type: 'general',
-        language: 'French',
-      })
-      .then(({data}) => {
-        setTextResponse(data.answer[0].text)
-        axiosInstance
-          .post(`/search/api/v1/search?question=${inputSearchValue}&ask_type=legal`)
-          .then(({data}) => {
-            setReferences(data.documents)
-            setReponseIsLoading(false)
-            axiosInstance.post(`/search/api/v1/suggest/`,{
-              query: inputSearchValue,
-              language: 'French',
-            }).then(({data})=>{
-              setReponseSuggestion(data.suggestions)
-            })
-          })
-      })
-    if (!searchAlreadyClicked) {
-      document.getElementById('search-accordion-header')?.click()
-      setSearchAlredyClicked(true)
-    }
+    const answerPromise = axiosInstance.post(`/search/api/v1/answer/`, {
+      question: inputSearchValue,
+      query_type: 'general',
+      language: 'French',
+    })
+    const searchPromise = axiosInstance.post(
+      `/search/api/v1/search?question=${inputSearchValue}&ask_type=legal`
+    )
+    const suggestionPromise = axiosInstance.post(`/search/api/v1/suggest/`, {
+      query: inputSearchValue,
+      language: 'French',
+    })
+
+    Promise.all([answerPromise, searchPromise, suggestionPromise]).then(
+      ([answerResponse, searchResponse, suggestionResponse]) => {
+        const newConvertation: ConvertationType = {
+          question: inputSearchValue,
+          answer: answerResponse.data.answer[0].text,
+          suggestions: suggestionResponse.data.suggestions,
+          references: searchResponse.data.documents,
+        }
+        setConvertation((prevConvertation: any) => [...prevConvertation, newConvertation])
+        setReponseIsLoading(false)
+        if (!searchAlreadyClicked) {
+          document.getElementById('search-accordion-header')?.click()
+          setSearchAlredyClicked(true)
+        }
+      }
+    )
   }
   const trimedText = (text: string) => text?.substring(text.indexOf(':') + 1).trim()
 
@@ -241,7 +253,15 @@ function Search() {
                 <div>
                   {suggestion.map((s, i) => (
                     <p dir='auto'>
-                      <div className='p-2 rounded-3 bg-secondary'>{s}</div>
+                      <div
+                        className='p-2 rounded-3 bg-secondary cursor-pointer'
+                        onClick={() => {
+                          ;(document.getElementById('search-input')! as HTMLInputElement).value = s
+                          handleSearch()
+                        }}
+                      >
+                        {s}
+                      </div>
                     </p>
                   ))}
                 </div>
@@ -283,35 +303,36 @@ function Search() {
             </FormGroup>
           </div> */}
         </div>
-        <div className=' card w-100'>
-          <div className='row'>
-            <div className='col-lg-8'>
-              <div className='card h-100 card-xl-stretch mb-5 mb-xl-8 '>
-                <div className='card-header'>
-                  <div className='w-100 card-title'>
-                    <div className='w-100 h-100 d-flex justify-content-between align-items-center'>
-                      <div>
-                        <label htmlFor=''>Objet: {question}</label>
-                      </div>
-                      {animatedTextResponse && (
-                        <div className='d-flex  align-items-center'>
-                          <div className='p-1'>
-                            <span className='accordion-icon'>
-                              <i className='bi bi-hand-thumbs-up-fill fs-2x'></i>
-                            </span>
-                          </div>
-                          <div className='px-2 pt-2'>
-                            <span className='accordion-icon'>
-                              <i className='bi bi-hand-thumbs-down-fill fs-2x'></i>
-                            </span>
-                          </div>
+        {convertation?.map((ele: ConvertationType, convertationIndex: number) => (
+          <div className=' card w-100'>
+            <div className='row'>
+              <div className='col-lg-8'>
+                <div className='card h-100 card-xl-stretch mb-5 mb-xl-8 '>
+                  <div className='card-header'>
+                    <div className='w-100 card-title'>
+                      <div className='w-100 h-100 d-flex justify-content-between align-items-center'>
+                        <div>
+                          <label htmlFor=''>Objet: {ele.question}</label>
                         </div>
-                      )}
+                        {animatedTextResponse && (
+                          <div className='d-flex  align-items-center'>
+                            <div className='p-1'>
+                              <span className='accordion-icon'>
+                                <i className='bi bi-hand-thumbs-up-fill fs-2x'></i>
+                              </span>
+                            </div>
+                            <div className='px-2 pt-2'>
+                              <span className='accordion-icon'>
+                                <i className='bi bi-hand-thumbs-down-fill fs-2x'></i>
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className='card-body'>{animatedTextResponse}</div>
-                {animatedTextResponse && (
+                  <div className='card-body'>{ele.answer}</div>
+
                   <div className='card-footer'>
                     <div className='w-lg-75'>
                       <div className='accordion accordion-icon-toggle ' id='kt_accordion_2-related'>
@@ -338,9 +359,19 @@ function Search() {
                             data-bs-parent='#kt_accordion_2-related'
                           >
                             <div>
-                              {reponseSuggestion.map((s, i) => (
+                              {ele.suggestions.map((s, i) => (
                                 <p dir='auto'>
-                                  <div className='p-2 rounded-3 fs-7 bg-secondary'>{s}</div>
+                                  <div
+                                    className='p-2 rounded-3 fs-7 bg-secondary cursor-pointer'
+                                    onClick={() => {
+                                      ;(
+                                        document.getElementById('search-input')! as HTMLInputElement
+                                      ).value = s
+                                      handleSearch()
+                                    }}
+                                  >
+                                    {s}
+                                  </div>
                                 </p>
                               ))}
                             </div>
@@ -349,41 +380,44 @@ function Search() {
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-            <div className='col-lg-4'>
-              {animatedTextResponse && (
+              <div className='col-lg-4'>
                 <div className='card p-3'>
                   <div className='card-header'>
                     <div className='card-title'>Références</div>
                   </div>
                   <div className='card-body'>
-                    {references.slice(0, showedReferenceCount).map((reference: any, i) => (
-                      <div key={i}>
-                        <div className='d-flex gap-2'>
-                          <button
-                            type='button'
-                            data-bs-toggle='modal'
-                            data-bs-target='#reference_content'
-                            onClick={() => setSelectedReference(reference)}
-                            className='btn btn-icon  flex-center bg-light btn-color-primary btn-active-color-primary h-40px'
-                          >
-                            <KTSVG
-                              path='/media/icons/duotune/coding/cod002.svg'
-                              className='svg-icon svg-icon-3x'
-                            />
-                          </button>
-                          <p className='p-2 rounded-3 bg-secondary' dir='auto'>
-                            {reference.metadata.doc_title}
-                          </p>
+                    {ele.references
+                      .slice(
+                        0,
+                        showedReferences.includes(convertationIndex) ? ele.references.length : 3
+                      )
+                      .map((reference: any, i) => (
+                        <div key={i}>
+                          <div className='d-flex gap-2'>
+                            <button
+                              type='button'
+                              data-bs-toggle='modal'
+                              data-bs-target='#reference_content'
+                              onClick={() => setSelectedReference(reference)}
+                              className='btn btn-icon  flex-center bg-light btn-color-primary btn-active-color-primary h-40px'
+                            >
+                              <KTSVG
+                                path='/media/icons/duotune/coding/cod002.svg'
+                                className='svg-icon svg-icon-3x'
+                              />
+                            </button>
+                            <p className='p-2 rounded-3 bg-secondary' dir='auto'>
+                              {reference.metadata.doc_title}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                    {showAllSuggestions ? (
+                      ))}
+                    {showedReferences.includes(convertationIndex) ? (
                       <button
                         type='button'
-                        onClick={handleShowLessReferences}
+                        onClick={() => handleShowLessReferences(convertationIndex)}
                         className='btn btn-link'
                       >
                         Voir moins
@@ -391,7 +425,7 @@ function Search() {
                     ) : (
                       <button
                         type='button'
-                        onClick={handleShowMoreReferences}
+                        onClick={() => handleShowMoreReferences(convertationIndex)}
                         className='btn btn-link'
                       >
                         Voir plus
@@ -399,10 +433,21 @@ function Search() {
                     )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
+        {reponseIsLoading && (
+          <div>
+             <img
+                  alt=''
+                  className='svg-icon svg-icon-2x'
+                  src={toAbsoluteUrl('/media/loader.gif')}
+                  width={200}
+                  height={200}
+                />
+          </div>
+        )}
       </div>
 
       <div className='modal fade' tabIndex={-1} id='reference_content'>
